@@ -2,15 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class snowBulletManager : MonoBehaviour {
-
+public class SnowBulletManager : MonoBehaviour {
+    const float FORCEVELO = 2.0f;
+    public float speed = 20.0f;
+    public float mass = 1.0f;
+    public float bulletUpAngle = 5f;
+    public GameObject theBody;
+    public Vector3 forward;
     public Rigidbody thisRigidbody;
     public GameObject thisGameObject;
+    public AudioSource hitAudioSource;
     // Use this for initialization
+    bool isHit = false;
     void Start()
     {
         thisRigidbody = GetComponent<Rigidbody>();
         thisGameObject = thisRigidbody.gameObject;
+        Vector3 bulletForward = forward;
+        bulletForward = Quaternion.Euler(theBody.transform.right * -bulletUpAngle) * bulletForward;
+
+        thisRigidbody.AddForce(bulletForward * speed * speed * mass / FORCEVELO);
+        isHit = false;
     }
 
     // Update is called once per frame
@@ -21,11 +33,17 @@ public class snowBulletManager : MonoBehaviour {
         {
             Destroy(thisGameObject);
         }
+        if (isHit && !hitAudioSource.isPlaying)
+            Destroy(thisGameObject);
 
     }
     void OnCollisionEnter(Collision collision)
     {
-        Destroy(thisGameObject);
+        hitAudioSource.Play();
+        Destroy(GetComponent<SphereCollider>());
+        Destroy(GetComponent<MeshRenderer>());
+        isHit = true;
+        
 
     }
 }

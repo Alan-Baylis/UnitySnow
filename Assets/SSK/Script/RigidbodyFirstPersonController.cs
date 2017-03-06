@@ -102,6 +102,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         float bulletInterval = 0f;
         float beamInterval = 0f;
 
+        SnowManager snowManager;
+
 
         public Vector3 Velocity
         {
@@ -136,6 +138,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init (transform, cam.transform);
+            snowManager = GetComponent<SnowManager>();
         }
 
 
@@ -153,6 +156,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void FixedUpdate()
         {
             GroundCheck();
+            CharacterMove();
             Vector2 input = GetInput();
 
             if ((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded))
@@ -273,13 +277,21 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 m_Jumping = false;
             }
-            float shotInput = Input.GetAxis("Fire1");
-            float beamInput = Input.GetAxis("Fire3");
+            /////////////////////////////////////////
+            
 
+        }
+        void CharacterMove()
+        {
+            float shotInput = Input.GetAxis("Fire1");
+            //float beamInput = Input.GetAxis("Fire3");
+            if(shotInput!=0)
+                snowManager.shot();
+            /*
             if (shotInput != 0 && bulletInterval == 0)
             {
                 bulletInterval = BULLETCOOLDOWN;
-                shot();
+                
             }
             if (bulletInterval > 0)
             {
@@ -288,6 +300,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (bulletInterval < 0)
                 bulletInterval = 0;
 
+            
             if (beamInput != 0 && beamInterval == 0)
             {
                 beamInterval = BULLETCOOLDOWN;
@@ -299,7 +312,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             if (beamInterval < 0)
                 beamInterval = 0;
+                */
         }
+        /*
         void shot()
         {
             GameObject newBullet = (GameObject)Instantiate(bullet, thisGameObject.transform.position + thisGameObject.transform.forward * BULLETPOSITION + thisGameObject.transform.up * BULLETPUPPOSITION, cam.transform.rotation);
@@ -315,5 +330,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             //newBullet.GetComponent<bulletAutoStart>().bulletUpAngle = 0f;
             newBullet.SetActive(true);
         }
+        */
     }
 }
