@@ -1,4 +1,3 @@
-g
-git commit -a -m "%date %time%"
+git commit -a -m "%date% %time%"
 git push
 pause
