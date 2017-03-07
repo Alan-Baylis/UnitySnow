@@ -11,10 +11,13 @@ public class SnowManager : MonoBehaviour {
     const float BULLETPUPPOSITION = 0.0f;
 
 
-    float snowResource;
-
-    float snowCooldown;
-    bool isCooldowning;
+    float snowResource;//가지고있는 눈의 양
+    int haveSnowBallCount;
+    int LimitSnowBallCount;
+    float limitSnowResource;
+    float snowCooldown;//눈 쏘기 쿨타임
+    float oneSnowBallNeedResource;
+    bool isCooldowning;//쿨다운 중인가?
     public Camera cam;
     public GameObject snowBall;
     public GameObject thisGameObject;
@@ -22,6 +25,9 @@ public class SnowManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         snowResource = 100000.0f;
+        limitSnowResource = 100000.0f;
+        haveSnowBallCount = 100;
+        LimitSnowBallCount = 100;
         if (cam == null)
             cam = GetComponentInChildren<Camera>();
 
@@ -45,16 +51,14 @@ public class SnowManager : MonoBehaviour {
         }
 
     }
+    //쏘는 메서드
     public void shot()
     {
         if (!isCooldowning && snowResource > 1.0f)
         {
             isCooldowning = true;
             GameObject newSnowBullet = Instantiate(snowBall, thisGameObject.transform.position + thisGameObject.transform.forward * BULLETPOSITION + thisGameObject.transform.up * BULLETPUPPOSITION, cam.transform.rotation,thisGameObject.transform);
-            
-            //print(cam.transform.forward);
 
-            //print(newSnowBullet.GetComponent<SnowBulletManager>().forward);
             newSnowBullet.GetComponent<SnowBallManager>().forward = cam.transform.forward;
             newSnowBullet.SetActive(true);
             snowCooldown = BULLETCOOLDOWN;
@@ -62,12 +66,21 @@ public class SnowManager : MonoBehaviour {
 
         }
     }
+    //눈을 얻는 메서드
     public void getSnow()
     {
-
+        if (haveSnowBallCount < LimitSnowBallCount && limitSnowResource> oneSnowBallNeedResource)
+        {
+            haveSnowBallCount++;
+            limitSnowResource -= oneSnowBallNeedResource;
+        }
     }
+    //눈을 뭉치는 메서드
     public void reLoading()
     {
-
+        if (snowResource<limitSnowResource)
+        {
+            snowResource += 0.5f;
+        }
     }
 }
