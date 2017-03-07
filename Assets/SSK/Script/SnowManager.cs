@@ -9,22 +9,54 @@ public class SnowManager : MonoBehaviour {
     const float BULLETCOOLDOWN = 1.0f;
     const float BULLETPOSITION = 0.7f;
     const float BULLETPUPPOSITION = 0.0f;
-
+    const float getSnowQuantityOneTime=10.0f;
+    const float getSnowTime = 1.0f;
 
     float snowResource;//가지고있는 눈의 양
+
     int haveSnowBallCount;
     int LimitSnowBallCount;
+
     float limitSnowResource;
+
     float snowCooldown;//눈 쏘기 쿨타임
+    float getSnowCooldown;
     float oneSnowBallNeedResource;
+
+
     bool isCooldowning;//쿨다운 중인가?
+    bool isGettingSnow;
+    public bool IsGettingSnow
+    {
+        get
+        {
+            return isGettingSnow;
+        }
+        set
+        {
+            isGettingSnow = value;
+        }
+    }
+
     public Camera cam;
     public GameObject snowBall;
     public GameObject thisGameObject;
-
+    GameObject bottomObject;
+    SnowTerrainManager stManager;
+    public GameObject BottomObject
+    {
+        get
+        {
+            return bottomObject;
+        }
+        set
+        {
+            bottomObject = value;
+        }
+    }
     // Use this for initialization
     void Start () {
-        snowResource = 100000.0f;
+        snowResource = 1000.0f;
         limitSnowResource = 100000.0f;
         haveSnowBallCount = 100;
         LimitSnowBallCount = 100;
@@ -36,7 +68,7 @@ public class SnowManager : MonoBehaviour {
             thisGameObject = GetComponent<Transform>().gameObject;
         if (snowBall == null)
             snowBall = GetComponentInChildren<SnowBallManager>(true).gameObject;
-
+        getSnowCooldown = getSnowTime;
 
 
     }
@@ -49,6 +81,14 @@ public class SnowManager : MonoBehaviour {
             snowCooldown = 0;
         if (snowCooldown == 0) {
             isCooldowning = false;
+        }
+        if (isGettingSnow)
+            getSnowCooldown -= Time.deltaTime;
+        if (getSnowCooldown < 0)
+        {
+            snowResource += getSnowQuantityOneTime;
+            stManager.useSnow(getSnowQuantityOneTime);
+            getSnowCooldown = getSnowTime;
         }
 
     }
@@ -70,18 +110,36 @@ public class SnowManager : MonoBehaviour {
     //눈을 얻는 메서드
     public void getSnow()
     {
-        if (haveSnowBallCount < LimitSnowBallCount && limitSnowResource> oneSnowBallNeedResource)
+        stManager = bottomObject.GetComponent<SnowTerrainManager>();
+        if (stManager == null)
         {
-            haveSnowBallCount++;
-            limitSnowResource -= oneSnowBallNeedResource;
+            isGettingSnow = false;
+            getSnowCooldown = getSnowTime;
+            return;
+        }
+            
+        if ((snowResource < limitSnowResource)&& (stManager.snowQuantity> getSnowQuantityOneTime))
+        {
+            isGettingSnow = true;
+            
+            //bottomObject.GetComponent<SnowTerrainManager>().C.a -= 0.1f;
+
+        }
+        else
+        {
+            isGettingSnow = false;
+            //bottomObject.GetComponent<SnowTerrainManager>().C.a += 0.1f;
         }
     }
     //눈을 뭉치는 메서드
     public void reLoading()
     {
-        if (snowResource<limitSnowResource)
+        
+        if (haveSnowBallCount < LimitSnowBallCount && limitSnowResource > oneSnowBallNeedResource)
         {
-            snowResource += 0.5f;
+            limitSnowResource -= oneSnowBallNeedResource;
+            haveSnowBallCount++;
+            
         }
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour {
 
+    
     bool isOnSnow;
     public bool IsOnSnow{
         get
