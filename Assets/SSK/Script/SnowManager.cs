@@ -16,7 +16,7 @@ public class SnowManager : MonoBehaviour {
     float snowCooldown;
     bool isCooldowning;
     public Camera cam;
-    public GameObject bullet;
+    public GameObject snowBall;
     public GameObject thisGameObject;
 
     // Use this for initialization
@@ -24,11 +24,15 @@ public class SnowManager : MonoBehaviour {
         snowResource = 100000.0f;
         if (cam == null)
             cam = GetComponentInChildren<Camera>();
-        if (bullet == null)
-            bullet = GetComponentInChildren<SnowBulletManager>().gameObject;
 
-		
-	}
+        if (thisGameObject == null)
+            thisGameObject = GetComponent<Transform>().gameObject;
+        if (snowBall == null)
+            snowBall = GetComponentInChildren<SnowBallManager>(true).gameObject;
+
+
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -46,11 +50,12 @@ public class SnowManager : MonoBehaviour {
         if (!isCooldowning && snowResource > 1.0f)
         {
             isCooldowning = true;
-            GameObject newSnowBullet = (GameObject)Instantiate(bullet, thisGameObject.transform.position + thisGameObject.transform.forward * BULLETPOSITION + thisGameObject.transform.up * BULLETPUPPOSITION, cam.transform.rotation);
-            //print(cam.transform.forward);
+            GameObject newSnowBullet = Instantiate(snowBall, thisGameObject.transform.position + thisGameObject.transform.forward * BULLETPOSITION + thisGameObject.transform.up * BULLETPUPPOSITION, cam.transform.rotation,thisGameObject.transform);
             
+            //print(cam.transform.forward);
+
             //print(newSnowBullet.GetComponent<SnowBulletManager>().forward);
-            newSnowBullet.GetComponent<SnowBulletManager>().forward = cam.transform.forward;
+            newSnowBullet.GetComponent<SnowBallManager>().forward = cam.transform.forward;
             newSnowBullet.SetActive(true);
             snowCooldown = BULLETCOOLDOWN;
             

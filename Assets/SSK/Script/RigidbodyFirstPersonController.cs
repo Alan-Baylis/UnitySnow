@@ -92,17 +92,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
 
         public GameObject thisGameObject;
-        public GameObject bullet;
-        public GameObject beam;
-        const float ACCELATIONCONST = 0.1f;
-        const float ROTATIONCONST = 5.0f;
-        const float BULLETCOOLDOWN = 0.1f;
-        const float BULLETPOSITION = 0.7f;
-        const float BULLETPUPPOSITION = 0.0f;
-        float bulletInterval = 0f;
-        float beamInterval = 0f;
-
-        SnowManager snowManager;
+        public SoundManager soundManager;
+        public SnowManager snowManager;
 
 
         public Vector3 Velocity
@@ -137,8 +128,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
-            mouseLook.Init (transform, cam.transform);
+            
             snowManager = GetComponent<SnowManager>();
+            soundManager = GetComponent<SoundManager>();
+            cam = GetComponentInChildren<Camera>();
+            mouseLook.Init(transform, cam.transform);
+            thisGameObject = m_RigidBody.gameObject;
         }
 
 
@@ -173,6 +168,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 {
                     m_RigidBody.AddForce(desiredMove*SlopeMultiplier(), ForceMode.Impulse);
                 }
+                
             }
 
             if (m_IsGrounded)
@@ -191,6 +187,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 {
                     m_RigidBody.Sleep();
                 }
+                if(input.magnitude!=0)
+                    soundManager.playWalkingSound();
+                else
+                    soundManager.stopWalkingSound();
             }
             else
             {
@@ -199,6 +199,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 {
                     StickToGroundHelper();
                 }
+                soundManager.stopWalkingSound();
             }
             m_Jump = false;
         }
@@ -263,10 +264,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_PreviouslyGrounded = m_IsGrounded;
             RaycastHit hitInfo;
             if (Physics.SphereCast(transform.position, m_Capsule.radius * (1.0f - advancedSettings.shellOffset), Vector3.down, out hitInfo,
-                                   ((m_Capsule.height/2f) - m_Capsule.radius) + advancedSettings.groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+                                   ((m_Capsule.height / 2f) - m_Capsule.radius) + advancedSettings.groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
             {
                 m_IsGrounded = true;
                 m_GroundContactNormal = hitInfo.normal;
+                //print(hitInfo.transform.gameObject.layer);
+                if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("snowTerrain")){
+                    soundManager.isOnSnow = true;
+                }else
+                {
+                    soundManager.isOnSnow = false;
+                }
             }
             else
             {
