@@ -268,13 +268,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 m_IsGrounded = true;
                 m_GroundContactNormal = hitInfo.normal;
+                soundManager.BottomObject=hitInfo.transform.gameObject;
                 //print(hitInfo.transform.gameObject.layer);
-                if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("snowTerrain")){
-                    soundManager.isOnSnow = true;
-                }else
-                {
-                    soundManager.isOnSnow = false;
-                }
+                
             }
             else
             {
@@ -292,52 +288,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         void CharacterMove()
         {
             float shotInput = Input.GetAxis("Fire1");
-            //float beamInput = Input.GetAxis("Fire3");
             if(shotInput!=0)
                 snowManager.shot();
-            /*
-            if (shotInput != 0 && bulletInterval == 0)
-            {
-                bulletInterval = BULLETCOOLDOWN;
-                
-            }
-            if (bulletInterval > 0)
-            {
-                bulletInterval -= Time.deltaTime;
-            }
-            if (bulletInterval < 0)
-                bulletInterval = 0;
-
-            
-            if (beamInput != 0 && beamInterval == 0)
-            {
-                beamInterval = BULLETCOOLDOWN;
-                beamShot();
-            }
-            if (beamInterval > 0)
-            {
-                beamInterval -= Time.deltaTime;
-            }
-            if (beamInterval < 0)
-                beamInterval = 0;
-                */
         }
-        /*
-        void shot()
-        {
-            GameObject newBullet = (GameObject)Instantiate(bullet, thisGameObject.transform.position + thisGameObject.transform.forward * BULLETPOSITION + thisGameObject.transform.up * BULLETPUPPOSITION, cam.transform.rotation);
-            newBullet.GetComponent<bulletAutoStart>().forward = cam.transform.forward;
-            newBullet.SetActive(true);
-        }
-        void beamShot()
-        {
-            GameObject newBullet = (GameObject)Instantiate(beam, thisGameObject.transform.position + thisGameObject.transform.forward * BULLETPOSITION + thisGameObject.transform.up * BULLETPUPPOSITION, cam.transform.rotation);
-            newBullet.GetComponent<beamAutoStart>().speed = 10000f;
-            newBullet.GetComponent<beamAutoStart>().forward = cam.transform.forward;
-
-            //newBullet.GetComponent<bulletAutoStart>().bulletUpAngle = 0f;
-            newBullet.SetActive(true);
-        }
-        */
     }
 }

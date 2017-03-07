@@ -28,6 +28,7 @@ public class SnowManager : MonoBehaviour {
         limitSnowResource = 100000.0f;
         haveSnowBallCount = 100;
         LimitSnowBallCount = 100;
+        oneSnowBallNeedResource = 100.0f;
         if (cam == null)
             cam = GetComponentInChildren<Camera>();
 
