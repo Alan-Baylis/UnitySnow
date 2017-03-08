@@ -268,17 +268,21 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 m_IsGrounded = true;
                 m_GroundContactNormal = hitInfo.normal;
-                
+
                 //print(hitInfo.transform.gameObject.layer);
+                soundManager.BottomObject = hitInfo.transform.gameObject;
+                snowManager.BottomObject = soundManager.BottomObject;
 
             }
             else
             {
                 m_IsGrounded = false;
                 m_GroundContactNormal = Vector3.up;
+                soundManager.BottomObject = null;
+                snowManager.BottomObject = soundManager.BottomObject;
             }
-            soundManager.BottomObject = hitInfo.transform.gameObject;
-            snowManager.BottomObject = soundManager.BottomObject;
+            
+            
 
             if (!m_PreviouslyGrounded && m_IsGrounded && m_Jumping)
             {
@@ -291,12 +295,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
         void CharacterMove()
         {
             float shotInput = Input.GetAxis("Fire1");
-            float getInput = Input.GetAxis("Fire3");
+            //float getInput = Input.GetAxis("Fire3");
+            
             if (shotInput!=0)
                 snowManager.shot();
-            if (getInput != 0)
+            //if (getInput != 0)
+            if (Input.GetKey(KeyCode.Z))
             {
-                print("getSnow()");
+                //print("getSnow()");
                 snowManager.getSnow();
             }
             else

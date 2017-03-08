@@ -53,12 +53,15 @@ public class SnowTerrainManager : MonoBehaviour {
             {
                 V = V1 * percent;
                 C.a = percent;
-            }else
+                GetComponent<Transform>().gameObject.layer = LayerMask.NameToLayer("snowTerrain");
+            }
+            else
             {
+                GetComponent<Transform>().gameObject.layer = LayerMask.NameToLayer("Terrain");
                 V = V1 * 0.5f;
                 C.a = percent;
             }
-            print(snowResourceQuantity.ToString() + percent);
+            //print(snowResourceQuantity.ToString() + percent);
 
         }
         GetComponent<Transform>().localScale = V;

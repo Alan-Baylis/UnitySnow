@@ -110,6 +110,8 @@ public class SnowManager : MonoBehaviour {
     //눈을 얻는 메서드
     public void getSnow()
     {
+        if (bottomObject == null)
+            return;
         stManager = bottomObject.GetComponent<SnowTerrainManager>();
         if (stManager == null)
         {
