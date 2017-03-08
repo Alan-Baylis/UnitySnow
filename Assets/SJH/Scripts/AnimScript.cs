@@ -1,19 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class AnimScript : MonoBehaviour {
 
     private Animator anim;
     private float speed = 0f;
     private bool collecting = false;
-    private CharacterController m_CharacterController;
-    
+    //private CharacterController m_CharacterController;
+    RigidbodyFirstPersonController m_CharacterController;
+
 
     // Use this for initialization
     void Start () {
         anim = GetComponentInChildren<Animator>();
-        m_CharacterController = GetComponent<CharacterController>();
+        //m_CharacterController = GetComponent<CharacterController>();
+        m_CharacterController = GetComponent<RigidbodyFirstPersonController>();
 
         ChangeChildLayer(transform);
     }
@@ -21,7 +24,7 @@ public class AnimScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        Vector2 vel2 = new Vector2(m_CharacterController.velocity.x, m_CharacterController.velocity.z);
+        Vector2 vel2 = new Vector2(m_CharacterController.Velocity.x, m_CharacterController.Velocity.z);
 
         if(vel2.sqrMagnitude > 0)
         {
