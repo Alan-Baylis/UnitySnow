@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SnowTerrainManager : MonoBehaviour {
     Transform thisTransform;
-    public float limitSnowQuantity;
-    float respawnTime;
+    public float limitSnowQuantity = 100.0f;
+    public float respawnTime = 20.0f;
     float snowResourceQuantity;
 
     public float snowQuantity
@@ -19,8 +19,8 @@ public class SnowTerrainManager : MonoBehaviour {
     public Color C;
     // Use this for initialization
     void Start () {
-        limitSnowQuantity = 100.0f;
-        respawnTime = 20.0f;
+        //limitSnowQuantity = 100.0f;
+        //respawnTime = 20.0f;
         snowResourceQuantity = limitSnowQuantity;
         /*
         foreach (Material m in GetComponent<Renderer>().materials)

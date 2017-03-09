@@ -141,7 +141,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             RotateView();
 
-            if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
+            if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump && !snowManager.IsGettingSnow)
             {
                 m_Jump = true;
             }
@@ -152,8 +152,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             GroundCheck();
             CharacterMove();
+            
+            
             Vector2 input = GetInput();
-
+            if (snowManager.IsGettingSnow)
+            {
+                input.x = 0;
+                input.y = 0;
+            }
             if ((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded))
             {
                 // always move along the camera forward as it is the direction that it being aimed at
@@ -264,7 +270,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_PreviouslyGrounded = m_IsGrounded;
             RaycastHit hitInfo;
             if (Physics.SphereCast(transform.position, m_Capsule.radius * (1.0f - advancedSettings.shellOffset), Vector3.down, out hitInfo,
-                                   ((m_Capsule.height / 2f) - m_Capsule.radius) + advancedSettings.groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+                                   ((m_Capsule.height / 2f) - m_Capsule.radius) + advancedSettings.groundCheckDistance, Physics.AllLayers))//, QueryTriggerInteraction.Ignore))
             {
                 m_IsGrounded = true;
                 m_GroundContactNormal = hitInfo.normal;
@@ -296,11 +302,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             float shotInput = Input.GetAxis("Fire1");
             //float getInput = Input.GetAxis("Fire3");
-            
-            if (shotInput!=0)
+
+            //if (shotInput!=0 && !snowManager.IsGettingSnow)
+            if (Input.GetKey(KeyCode.Mouse0) && !snowManager.IsGettingSnow)
                 snowManager.shot();
             //if (getInput != 0)
-            if (Input.GetKey(KeyCode.Z))
+            if (Input.GetKey(KeyCode.LeftControl))
             {
                 //print("getSnow()");
                 snowManager.getSnow();
@@ -308,6 +315,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
             else
             {
                 snowManager.IsGettingSnow = false;
+            }
+            if (Input.GetKey(KeyCode.R) && !snowManager.IsGettingSnow)
+            {
+                snowManager.reLoad();
             }
         }
     }

@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class SnowManager : MonoBehaviour {
 
+
+    UIManager uiManager;
+
     const float ACCELATIONCONST = 0.1f;
     const float ROTATIONCONST = 5.0f;
-    const float BULLETCOOLDOWN = 1.0f;
+    const float BULLETCOOLDOWN = 0.2f;
     const float BULLETPOSITION = 0.7f;
     const float BULLETPUPPOSITION = 0.0f;
-    const float getSnowQuantityOneTime=10.0f;
-    const float getSnowTime = 1.0f;
+    const float getSnowQuantityOneTime=50.0f;
+    const float getSnowTime = 0.2f;
 
-    float snowResource;//가지고있는 눈의 양
+    float haveSnowResource;//가지고있는 눈의 양
 
     int haveSnowBallCount;
     int LimitSnowBallCount;
@@ -56,8 +59,8 @@ public class SnowManager : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
-        snowResource = 1000.0f;
-        limitSnowResource = 100000.0f;
+        haveSnowResource = 900.0f;
+        limitSnowResource = 1000.0f;
         haveSnowBallCount = 100;
         LimitSnowBallCount = 100;
         oneSnowBallNeedResource = 100.0f;
@@ -69,7 +72,10 @@ public class SnowManager : MonoBehaviour {
         if (snowBall == null)
             snowBall = GetComponentInChildren<SnowBallManager>(true).gameObject;
         getSnowCooldown = getSnowTime;
-
+        GameObject uiRoot = GameObject.Find("GameUIRoot");
+        print(uiRoot);
+        uiManager = uiRoot.GetComponent<UIManager>();
+        uiManager.setSnowBallLableInit(LimitSnowBallCount);
 
     }
 	
@@ -86,17 +92,20 @@ public class SnowManager : MonoBehaviour {
             getSnowCooldown -= Time.deltaTime;
         if (getSnowCooldown < 0)
         {
-            snowResource += getSnowQuantityOneTime;
+            haveSnowResource += getSnowQuantityOneTime;
             stManager.useSnow(getSnowQuantityOneTime);
             getSnowCooldown = getSnowTime;
         }
+        uiManager.setSnowBallLableI(haveSnowBallCount);
+        uiManager.setSnowResource(haveSnowResource / limitSnowResource);
 
     }
     //쏘는 메서드
     public void shot()
     {
-        if (!isCooldowning && snowResource > 1.0f)
+        if (!isCooldowning && haveSnowBallCount > 0)
         {
+            haveSnowBallCount--;
             isCooldowning = true;
             GameObject newSnowBullet = Instantiate(snowBall, thisGameObject.transform.position + thisGameObject.transform.forward * BULLETPOSITION + thisGameObject.transform.up * BULLETPUPPOSITION, cam.transform.rotation,thisGameObject.transform);
 
@@ -120,7 +129,7 @@ public class SnowManager : MonoBehaviour {
             return;
         }
             
-        if ((snowResource < limitSnowResource)&& (stManager.snowQuantity> getSnowQuantityOneTime))
+        if ((haveSnowResource < limitSnowResource)&& (stManager.snowQuantity> getSnowQuantityOneTime))
         {
             isGettingSnow = true;
             
@@ -134,12 +143,12 @@ public class SnowManager : MonoBehaviour {
         }
     }
     //눈을 뭉치는 메서드
-    public void reLoading()
+    public void reLoad()
     {
         
-        if (haveSnowBallCount < LimitSnowBallCount && limitSnowResource > oneSnowBallNeedResource)
+        if (haveSnowBallCount < LimitSnowBallCount && haveSnowResource > oneSnowBallNeedResource)
         {
-            limitSnowResource -= oneSnowBallNeedResource;
+            haveSnowResource -= oneSnowBallNeedResource;
             haveSnowBallCount++;
             
         }
