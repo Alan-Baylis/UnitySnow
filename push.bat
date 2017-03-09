@@ -1,4 +1,5 @@
 git add --all
-git commit -a -m "%date% %time% by SSK"
+set /p str=comment:
+git commit -a -m "%str% - %date% %time% by %USERNAME%"
 git push
 pause
