@@ -11,6 +11,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public LerpControlledBob jumpAndLandingBob = new LerpControlledBob();
         public RigidbodyFirstPersonController rigidbodyFirstPersonController;
         public float StrideInterval;
+
+
         [Range(0f, 1f)] public float RunningStrideLengthen;
 
        // private CameraRefocus m_CameraRefocus;
@@ -18,8 +20,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector3 m_OriginalCameraPosition;
 
 
+        //GameObject eye;
+
         private void Start()
         {
+            //eye = GameObject.Find("cheek");
+
             motionBob.Setup(Camera, StrideInterval);
             m_OriginalCameraPosition = Camera.transform.localPosition;
        //     m_CameraRefocus = new CameraRefocus(Camera, transform.root.transform, Camera.transform.localPosition);
@@ -28,7 +34,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void Update()
         {
+          //  GetComponent<Transform>().position=eye.transform.position;
           //  m_CameraRefocus.GetFocusPoint();
+          
             Vector3 newCameraPosition;
             if (rigidbodyFirstPersonController.Velocity.magnitude > 0 && rigidbodyFirstPersonController.Grounded)
             {
@@ -49,6 +57,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = rigidbodyFirstPersonController.Grounded;
+            
           //  m_CameraRefocus.SetFocusPoint();
         }
     }
