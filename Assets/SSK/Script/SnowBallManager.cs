@@ -24,7 +24,7 @@ public class SnowBallManager : MonoBehaviour {
                 hitAudioSource = audio;
 
         }
-        theBody = thisGameObject.transform.parent.gameObject;
+        //theBody = thisGameObject.transform.parent.gameObject;
         Vector3 bulletForward = forward;
         bulletForward = Quaternion.Euler(theBody.transform.right * -bulletUpAngle) * bulletForward;
 

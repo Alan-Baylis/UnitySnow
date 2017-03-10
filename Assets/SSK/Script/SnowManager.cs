@@ -107,9 +107,11 @@ public class SnowManager : MonoBehaviour {
         {
             haveSnowBallCount--;
             isCooldowning = true;
-            GameObject newSnowBullet = Instantiate(snowBall, thisGameObject.transform.position + thisGameObject.transform.forward * BULLETPOSITION + thisGameObject.transform.up * BULLETPUPPOSITION, cam.transform.rotation,thisGameObject.transform);
+            GameObject newSnowBullet = Instantiate(snowBall, thisGameObject.transform.position + thisGameObject.transform.forward * BULLETPOSITION + thisGameObject.transform.up * BULLETPUPPOSITION, cam.transform.rotation);
 
-            newSnowBullet.GetComponent<SnowBallManager>().forward = cam.transform.forward;
+            SnowBallManager sb = newSnowBullet.GetComponent<SnowBallManager>();
+            sb.forward = cam.transform.forward;
+            sb.theBody = thisGameObject;
             newSnowBullet.SetActive(true);
             snowCooldown = BULLETCOOLDOWN;
             
