@@ -13,13 +13,20 @@ public class ScoutCharaterManager : CharacterManager {
     protected bool weaponState;
     */
 
+
+    private void Awake()
+    {
+        initState();
+        initValue();
+    }
     // Use this for initialization
     void Start () {
-        initState();
+        
+        
 	}
     protected override void initValue()
     {
-        moveSpeed = 2.0f;
+        moveSpeed = 20.0f;
         makeSnowBallSpeed = 0.1f;
         hp = 80;
         snowBallMagaine = 50;

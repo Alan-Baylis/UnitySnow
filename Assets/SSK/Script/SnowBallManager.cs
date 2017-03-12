@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SnowBallManager : MonoBehaviour {
     const float FORCEVELO = 2.0f;
-    public float speed = 20.0f;
+    public float speed = 1.0f;
     public float mass = 1.0f;
     public float bulletUpAngle = 5f;
     public GameObject theBody;
@@ -14,29 +14,39 @@ public class SnowBallManager : MonoBehaviour {
     public AudioSource hitAudioSource;
     // Use this for initialization
     bool isHit = false;
-    void Start()
+
+    void Awake()
     {
         thisRigidbody = GetComponent<Rigidbody>();
         thisGameObject = thisRigidbody.gameObject;
-        
-        foreach (AudioSource audio in GetComponents<AudioSource>()){
+
+        foreach (AudioSource audio in GetComponents<AudioSource>())
+        {
             if (audio.clip.name == "snowBallHit")
+            {
                 hitAudioSource = audio;
+
+            }
 
         }
         //theBody = thisGameObject.transform.parent.gameObject;
         Vector3 bulletForward = forward;
-        bulletForward = Quaternion.Euler(theBody.transform.right * -bulletUpAngle) * bulletForward;
+        //bulletForward = Quaternion.Euler(theBody.transform.right * -bulletUpAngle) * bulletForward;
+        //bulletForward = Quaternion.Euler(theBody.transform.right * -bulletUpAngle) * bulletForward;
 
-        thisRigidbody.AddForce(bulletForward * speed * speed * mass / FORCEVELO);
+        thisRigidbody.AddForce(bulletForward * speed * speed * thisRigidbody.mass / FORCEVELO);
         isHit = false;
+    }
+    void Start()
+    {
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         //print(thisRigidbody.velocity);
-        if (thisGameObject.transform.position.magnitude > 10000)
+        if (thisGameObject.transform.position.magnitude > 1000)
         {
             Destroy(thisGameObject);
         }

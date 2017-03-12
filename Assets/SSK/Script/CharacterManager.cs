@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterManager : MonoBehaviour {
+public abstract class CharacterManager : MonoBehaviour {
     protected RigidbodyFirstPersonController rigidFPSController;
     protected SnowManager snowManager;
     protected SoundManager soundManager;
@@ -58,7 +58,7 @@ public class CharacterManager : MonoBehaviour {
     {
         get
         {
-            return attackPower;
+            return attackSpeed;
         }
     }
     public bool WeaponState
@@ -104,36 +104,62 @@ public class CharacterManager : MonoBehaviour {
         }
     }
 
+
+    void Awake()
+    {
+        initState();
+    }
     // Use this for initialization
     void Start () {
-        initState();
+        
 
     }
     protected void initState()
     {
+        print("initState()");
+        /*
         rigidFPSController = GetComponent<RigidbodyFirstPersonController>();
         snowManager = GetComponent<SnowManager>();
         soundManager = GetComponent<SoundManager>();
         animScript = GetComponent<AnimScript>();
+        */
+        thisGameObject = transform.gameObject;
+
+        rigidFPSController = thisGameObject.AddComponent<RigidbodyFirstPersonController>();
+        snowManager = thisGameObject.AddComponent<SnowManager>();
+        soundManager = thisGameObject.AddComponent<SoundManager>();
+        animScript = thisGameObject.AddComponent<AnimScript>();
         GameObject uiRoot = GameObject.Find("GameUIRoot");
         //print(uiRoot);
         uiManager = uiRoot.GetComponent<UIManager>();
-        thisGameObject = transform.gameObject;
+        
+
         rigidFPSController.ctManager = this;
+        
+
         snowManager.ctManager = this;
+        
+
         soundManager.ctManager = this;
+        
+
         animScript.ctManager = this;
+        
     }
-    protected virtual void initValue()
-    {
-        moveSpeed = 1.0f;
-        makeSnowBallSpeed=0.1f;
-        hp=100;
-        snowBallMagaine=50;
-        attackPower=2;
-        attackSpeed=0.1f;
-        weaponState=false;
-    }
+    //protected virtual void initValue()
+    //{
+
+    //    moveSpeed = 1.0f;
+    //    makeSnowBallSpeed = 0.1f;
+    //    hp = 100;
+    //    snowBallMagaine = 50;
+    //    attackPower = 2;
+    //    attackSpeed = 0.1f;
+    //    weaponState = false;
+
+
+    //}
+    protected abstract void initValue();
     // Update is called once per frame
     void Update () {
 		

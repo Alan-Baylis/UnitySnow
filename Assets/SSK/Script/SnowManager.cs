@@ -8,9 +8,9 @@ public class SnowManager : MonoBehaviour {
     //UIManager uiManager;
     public CharacterManager ctManager;
 
-    public float snowBallCoolDownTime = 0.2f;
-    public float snowBallStartPosition = 0.7f;
-    public float MakeSnowBallSpeed = 0.2f;
+    public float snowBallCoolDownTime;
+    public float snowBallStartPosition;
+    public float MakeSnowBallSpeed;
     
     int haveSnowBallCount;
     int LimitSnowBallCount;
@@ -27,36 +27,30 @@ public class SnowManager : MonoBehaviour {
     
     // Use this for initialization
     void Start () {
-        
-        //haveSnowBallCount = 100;
-        //LimitSnowBallCount = 100;
-        LimitSnowBallCount=ctManager.SnowBallMagaine;
+        LimitSnowBallCount = ctManager.SnowBallMagaine;
         haveSnowBallCount = LimitSnowBallCount;
         MakeSnowBallSpeed = ctManager.MakeSnowBallSpeed;
         snowBallCoolDownTime = ctManager.AttackSpeed;
-
+        getSnowCooldown = MakeSnowBallSpeed;
+        ctManager.setSnowBallLableInit(LimitSnowBallCount);
 
         if (cam == null)
             cam = GetComponentInChildren<Camera>();
         
         if (snowBall == null)
             snowBall = GetComponentInChildren<SnowBallManager>(true).gameObject;
-        getSnowCooldown = MakeSnowBallSpeed;
-        //GameObject uiRoot = GameObject.Find("GameUIRoot");
-        //print(uiRoot);
-        //ctManager = uiRoot.GetComponent<CharacterManager>();
-        ctManager = GetComponent<CharacterManager>();
-        ctManager.setSnowBallLableInit(LimitSnowBallCount);
 
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if(isCooldowning)
+        if (isCooldowning)
+        {
             snowCooldown -= Time.deltaTime;
-        if (snowCooldown < 0)
+            //print(snowCooldown);
+        }
+        if (snowCooldown <= 0 && isCooldowning) {
             snowCooldown = 0;
-        if (snowCooldown == 0) {
             isCooldowning = false;
         }
         if (ctManager.IsMakingSnowBall)
@@ -69,7 +63,6 @@ public class SnowManager : MonoBehaviour {
             getSnowCooldown = MakeSnowBallSpeed;
         }
         ctManager.setSnowBallLableI(haveSnowBallCount);
-        //ctManager.setSnowResource(haveSnowResource / limitSnowResource);
 
     }
     //쏘는 메서드
