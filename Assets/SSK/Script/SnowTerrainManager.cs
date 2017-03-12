@@ -7,15 +7,22 @@ public class SnowTerrainManager : MonoBehaviour {
     public float limitSnowQuantity = 100.0f;
     public float respawnTime = 20.0f;
     float snowResourceQuantity;
+    const float useQuantity = 10.0f;
 
-    public float snowQuantity
+    public float SnowQuantity
     {
         get
         {
             return snowResourceQuantity;
         }
     }
-    
+    public bool CanGetSnow
+    {
+        get
+        {
+            return snowResourceQuantity > useQuantity;
+        }
+    }
     public Color C;
     // Use this for initialization
     void Start () {
@@ -69,7 +76,7 @@ public class SnowTerrainManager : MonoBehaviour {
         //print(C.a);
         
     }
-    public void useSnow(float useQuantity)
+    public void useSnow()
     {
         snowResourceQuantity -= useQuantity;
     }

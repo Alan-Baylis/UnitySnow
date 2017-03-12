@@ -10,7 +10,7 @@ public class AnimScript : MonoBehaviour {
     private bool collecting = false;
     //private CharacterController m_CharacterController;
     RigidbodyFirstPersonController m_CharacterController;
-
+    public CharacterManager ctManager;
 
     // Use this for initialization
     void Start () {

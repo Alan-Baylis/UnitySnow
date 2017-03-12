@@ -5,77 +5,48 @@ using UnityEngine;
 public class SnowManager : MonoBehaviour {
 
 
-    UIManager uiManager;
+    //UIManager uiManager;
+    public CharacterManager ctManager;
 
-    const float ACCELATIONCONST = 0.1f;
-    const float ROTATIONCONST = 5.0f;
-    const float BULLETCOOLDOWN = 0.2f;
-    const float BULLETPOSITION = 0.7f;
-    const float BULLETPUPPOSITION = 0.0f;
-    const float getSnowQuantityOneTime=50.0f;
-    const float getSnowTime = 0.2f;
-
-    float haveSnowResource;//가지고있는 눈의 양
-
+    public float snowBallCoolDownTime = 0.2f;
+    public float snowBallStartPosition = 0.7f;
+    public float MakeSnowBallSpeed = 0.2f;
+    
     int haveSnowBallCount;
     int LimitSnowBallCount;
 
-    float limitSnowResource;
-
     float snowCooldown;//눈 쏘기 쿨타임
     float getSnowCooldown;
-    float oneSnowBallNeedResource;
 
 
     bool isCooldowning;//쿨다운 중인가?
-    bool isGettingSnow;
-    public bool IsGettingSnow
-    {
-        get
-        {
-            return isGettingSnow;
-        }
-        set
-        {
-            isGettingSnow = value;
-        }
-    }
-
+    
     public Camera cam;
     public GameObject snowBall;
-    public GameObject thisGameObject;
-    GameObject bottomObject;
     SnowTerrainManager stManager;
-    public GameObject BottomObject
-    {
-        get
-        {
-            return bottomObject;
-        }
-        set
-        {
-            bottomObject = value;
-        }
-    }
+    
     // Use this for initialization
     void Start () {
-        haveSnowResource = 900.0f;
-        limitSnowResource = 1000.0f;
-        haveSnowBallCount = 100;
-        LimitSnowBallCount = 100;
-        oneSnowBallNeedResource = 100.0f;
+        
+        //haveSnowBallCount = 100;
+        //LimitSnowBallCount = 100;
+        LimitSnowBallCount=ctManager.SnowBallMagaine;
+        haveSnowBallCount = LimitSnowBallCount;
+        MakeSnowBallSpeed = ctManager.MakeSnowBallSpeed;
+        snowBallCoolDownTime = ctManager.AttackSpeed;
+
+
         if (cam == null)
             cam = GetComponentInChildren<Camera>();
-
-        if (thisGameObject == null)
-            thisGameObject = GetComponent<Transform>().gameObject;
+        
         if (snowBall == null)
             snowBall = GetComponentInChildren<SnowBallManager>(true).gameObject;
-        getSnowCooldown = getSnowTime;
-        GameObject uiRoot = GameObject.Find("GameUIRoot");
-        print(uiRoot);
-        uiManager = uiRoot.GetComponent<UIManager>();
-        uiManager.setSnowBallLableInit(LimitSnowBallCount);
+        getSnowCooldown = MakeSnowBallSpeed;
+        //GameObject uiRoot = GameObject.Find("GameUIRoot");
+        //print(uiRoot);
+        //ctManager = uiRoot.GetComponent<CharacterManager>();
+        ctManager = GetComponent<CharacterManager>();
+        ctManager.setSnowBallLableInit(LimitSnowBallCount);
 
     }
 	
@@ -88,16 +59,17 @@ public class SnowManager : MonoBehaviour {
         if (snowCooldown == 0) {
             isCooldowning = false;
         }
-        if (isGettingSnow)
+        if (ctManager.IsMakingSnowBall)
             getSnowCooldown -= Time.deltaTime;
         if (getSnowCooldown < 0)
         {
-            haveSnowResource += getSnowQuantityOneTime;
-            stManager.useSnow(getSnowQuantityOneTime);
-            getSnowCooldown = getSnowTime;
+            haveSnowBallCount++;
+            stManager.useSnow();
+
+            getSnowCooldown = MakeSnowBallSpeed;
         }
-        uiManager.setSnowBallLableI(haveSnowBallCount);
-        uiManager.setSnowResource(haveSnowResource / limitSnowResource);
+        ctManager.setSnowBallLableI(haveSnowBallCount);
+        //ctManager.setSnowResource(haveSnowResource / limitSnowResource);
 
     }
     //쏘는 메서드
@@ -107,52 +79,45 @@ public class SnowManager : MonoBehaviour {
         {
             haveSnowBallCount--;
             isCooldowning = true;
-            GameObject newSnowBullet = Instantiate(snowBall, thisGameObject.transform.position + thisGameObject.transform.forward * BULLETPOSITION + thisGameObject.transform.up * BULLETPUPPOSITION, cam.transform.rotation);
+            GameObject newSnowBullet = Instantiate(snowBall, ctManager.ThisGameObject.transform.position + ctManager.ThisGameObject.transform.forward * snowBallStartPosition + ctManager.ThisGameObject.transform.up, cam.transform.rotation);
 
             SnowBallManager sb = newSnowBullet.GetComponent<SnowBallManager>();
             sb.forward = cam.transform.forward;
-            sb.theBody = thisGameObject;
+            sb.theBody = ctManager.ThisGameObject;
             newSnowBullet.SetActive(true);
-            snowCooldown = BULLETCOOLDOWN;
+            snowCooldown = snowBallCoolDownTime;
             
 
         }
     }
-    //눈을 얻는 메서드
-    public void getSnow()
+    //스노우볼을 얻는 메서드
+    public void makeSnowBall()
     {
-        if (bottomObject == null)
+        if (ctManager.BottomObject == null)
             return;
-        stManager = bottomObject.GetComponent<SnowTerrainManager>();
+        stManager = ctManager.BottomObject.GetComponent<SnowTerrainManager>();
         if (stManager == null)
         {
-            isGettingSnow = false;
-            getSnowCooldown = getSnowTime;
+            ctManager.IsMakingSnowBall = false;
+            getSnowCooldown = MakeSnowBallSpeed;
             return;
         }
-            
-        if ((haveSnowResource < limitSnowResource)&& (stManager.snowQuantity> getSnowQuantityOneTime))
-        {
-            isGettingSnow = true;
-            
-            //bottomObject.GetComponent<SnowTerrainManager>().C.a -= 0.1f;
 
+               
+        if (haveSnowBallCount < LimitSnowBallCount &&stManager.CanGetSnow)
+        {
+            ctManager.IsMakingSnowBall = true;
+            
+            
         }
         else
         {
-            isGettingSnow = false;
-            //bottomObject.GetComponent<SnowTerrainManager>().C.a += 0.1f;
+            ctManager.IsMakingSnowBall = false;
         }
     }
-    //눈을 뭉치는 메서드
-    public void reLoad()
+
+    public void setInit()
     {
-        
-        if (haveSnowBallCount < LimitSnowBallCount && haveSnowResource > oneSnowBallNeedResource)
-        {
-            haveSnowResource -= oneSnowBallNeedResource;
-            haveSnowBallCount++;
-            
-        }
+
     }
 }

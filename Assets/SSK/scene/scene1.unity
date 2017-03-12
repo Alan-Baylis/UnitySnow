@@ -162,6 +162,11 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114132429747439462, guid: 849a271f1dc03b94f8134827c7ecf501,
+        type: 2}
+      propertyPath: speed
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 849a271f1dc03b94f8134827c7ecf501, type: 2}
   m_IsPrefabParent: 0
@@ -181,7 +186,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &212895175
 Transform:
   m_ObjectHideFlags: 0
@@ -189,7 +194,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 212895174}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -31.475405, y: -291.14755, z: 0}
+  m_LocalPosition: {x: -137.70493, y: -291.14755, z: 0}
   m_LocalScale: {x: 248, y: 72, z: 1}
   m_Children: []
   m_Father: {fileID: 1317530671}
@@ -321,7 +326,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 552488467}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.9835979, y: 0, z: 0}
+  m_LocalPosition: {x: -0.9836056, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1317530671}
@@ -363,7 +368,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &582882705
 Transform:
   m_ObjectHideFlags: 0
@@ -371,7 +376,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 582882704}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -31.475405, y: -291.14755, z: 0}
+  m_LocalPosition: {x: -137.70493, y: -291.14755, z: 0}
   m_LocalScale: {x: 224, y: 48, z: 1}
   m_Children: []
   m_Father: {fileID: 1317530671}
@@ -431,6 +436,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5858c1774d9bedc45a6b6ea829cd840e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ctManager: {fileID: 0}
+--- !u!114 &607543986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 607543976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f34bee11cdaf964b86dbf048affe486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1202009169
@@ -645,15 +662,15 @@ MonoBehaviour:
     e00: 360
     e01: 0
     e02: 0
-    e03: -0.9835979
+    e03: 0.9836056
     e10: 0
     e11: 360
     e12: 0
-    e13: -0
+    e13: 0
     e20: 0
     e21: 0
     e22: 360
-    e23: -0
+    e23: 0
     e30: 0
     e31: 0
     e32: 0
@@ -715,7 +732,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1594239693}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -31.475405, y: -202.62296, z: 0}
+  m_LocalPosition: {x: -137.70493, y: -202.62296, z: 0}
   m_LocalScale: {x: 48, y: 48, z: 1}
   m_Children: []
   m_Father: {fileID: 1317530671}
@@ -865,8 +882,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e9b72fd040bd84db60ee78beb1d777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limitSnowQuantity: 1000
-  respawnTime: 30
+  limitSnowQuantity: 100
+  respawnTime: 10
   C: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1677723565
 BoxCollider:

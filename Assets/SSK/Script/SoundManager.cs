@@ -19,18 +19,7 @@ public class SoundManager : MonoBehaviour {
     bool isWalking;
     AudioSource walkSoilSoundSource;
     AudioSource walkSnowSoundSource;
-    GameObject bottomObject;
-    public GameObject BottomObject
-    {
-        get
-        {
-            return bottomObject;
-        }
-        set
-        {
-            bottomObject = value;
-        }
-    }
+    public CharacterManager ctManager;
 
     // Use this for initialization
     void Start () {
@@ -48,8 +37,8 @@ public class SoundManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if ( (bottomObject != null) && 
-            (bottomObject.transform.gameObject.layer == LayerMask.NameToLayer("snowTerrain")) )
+        if ( (ctManager.BottomObject != null) && 
+            (ctManager.BottomObject.transform.gameObject.layer == LayerMask.NameToLayer("snowTerrain")) )
         {
             isOnSnow = true;
         }

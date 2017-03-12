@@ -6,18 +6,15 @@ using UnityEngine;
 //public class UIManager<T> : MonoBehaviour where T:MonoBehaviour{
 public class UIManager : MonoBehaviour
 {
-    UISprite resourceSprite;
+    //UISprite resourceSprite;
     UILabel snowBallLable;
-
-
-
     int limitSnowBall;
     int nowSnowBall;
 
 
     // Use this for initialization
     void Start () {
-        resourceSprite = findInChildren<UISprite>("ResourceSpriteUI");
+        //resourceSprite = findInChildren<UISprite>("ResourceSpriteUI");
         snowBallLable = findInChildren<UILabel>("SnowBallLableUI");
 
     }
@@ -27,6 +24,7 @@ public class UIManager : MonoBehaviour
 		
 
 	}
+
     public void setSnowBallLableInit(int limitSnowBall)
     {
         this.limitSnowBall = limitSnowBall;
@@ -37,10 +35,12 @@ public class UIManager : MonoBehaviour
         snowBallLable.text = string.Format("{0}/{1}", nowSnowBall, limitSnowBall);
 
     }
+    /*
     public void setSnowResource(float snowValue)
     {
         resourceSprite.fillAmount = snowValue;
     }
+    */
     T findInChildren<T>(string name) where T:MonoBehaviour
     {
         foreach (T u in GetComponentsInChildren<T>())
