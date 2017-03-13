@@ -24,17 +24,19 @@ public class AnimScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        Vector2 vel2 = new Vector2(m_CharacterController.Velocity.x, m_CharacterController.Velocity.z);
-
-        if(vel2.sqrMagnitude > 0)
+        if (m_CharacterController != null)
         {
-            speed = 1f;
-        }
-        else
-        {
-            speed = 0f;
-        }
+            Vector2 vel2 = new Vector2(m_CharacterController.Velocity.x, m_CharacterController.Velocity.z);
 
+            if (vel2.sqrMagnitude > 0)
+            {
+                speed = 1f;
+            }
+            else
+            {
+                speed = 0f;
+            }
+        }
 
         if (Input.GetMouseButton(1))
             collecting = true;
@@ -53,11 +55,11 @@ public class AnimScript : MonoBehaviour {
             {
                 ChangeChildLayer(trans.GetChild(i));
             }
-            trans.gameObject.layer = LayerMask.NameToLayer("Player");
+            //trans.gameObject.layer = LayerMask.NameToLayer("Player");
         }
         else
         {
-            trans.gameObject.layer = LayerMask.NameToLayer("Player");
+            //trans.gameObject.layer = LayerMask.NameToLayer("Player");
         }
     }
 }

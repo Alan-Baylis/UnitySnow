@@ -140,7 +140,7 @@ public class RigidbodyFirstPersonController : MonoBehaviour
     {
         RotateView();
 
-        if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump && !ctManager.IsMakingSnowBall)
+        if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump && (ctManager.State == CharacterState.Normal))
         {
             m_Jump = true;
         }
@@ -154,7 +154,7 @@ public class RigidbodyFirstPersonController : MonoBehaviour
 
 
         Vector2 input = GetInput();
-        if (ctManager.IsMakingSnowBall)
+        if (ctManager.State != CharacterState.Normal)
         {
             input.x = 0;
             input.y = 0;
@@ -268,8 +268,8 @@ public class RigidbodyFirstPersonController : MonoBehaviour
     {
         m_PreviouslyGrounded = m_IsGrounded;
         RaycastHit hitInfo;
-        if (Physics.SphereCast(transform.position, 
-            m_Capsule.radius * (1.0f - advancedSettings.shellOffset), 
+        if (Physics.SphereCast(transform.position,
+            m_Capsule.radius * (1.0f - advancedSettings.shellOffset),
             Vector3.down, out hitInfo,
             ((m_Capsule.height / 2f) - m_Capsule.radius) + advancedSettings.groundCheckDistance,
             Physics.AllLayers))//, QueryTriggerInteraction.Ignore))
@@ -303,24 +303,38 @@ public class RigidbodyFirstPersonController : MonoBehaviour
     void CharacterMove()
     {
         float shotInput = Input.GetAxis("Fire1");
-        //float getInput = Input.GetAxis("Fire3");
 
-        //if (shotInput!=0 && !snowManager.IsGettingSnow)
-        if (Input.GetKey(KeyCode.Mouse0) && !ctManager.IsMakingSnowBall)
-            ctManager.shot();
-        //if (getInput != 0)
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (ctManager.State == CharacterState.Normal)
         {
-            //print("getSnow()");
-            ctManager.makeSnowBall();
+            if (Input.GetKey(KeyCode.Mouse0))
+                ctManager.shot1();
+
+
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+
+                ctManager.makeSnowBall();
+            }
+            if (Input.GetKey(KeyCode.Mouse1))
+            {
+
+            }
         }
-        else
+        if(ctManager.State == CharacterState.Channeling)
         {
-            ctManager.IsMakingSnowBall = false;
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+
+                ctManager.makeSnowBall();
+            }
+            else
+            {
+                ctManager.State = CharacterState.Normal;
+            }
         }
-        if (Input.GetKey(KeyCode.R) && !ctManager.IsMakingSnowBall)
-        {
-            //ctManager.reLoad();
-        }
+
+
+        
+
     }
 }

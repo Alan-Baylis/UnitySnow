@@ -15,8 +15,8 @@ public class SnowManager : MonoBehaviour {
     int haveSnowBallCount;
     int LimitSnowBallCount;
 
-    float snowCooldown;//눈 쏘기 쿨타임
-    float getSnowCooldown;
+    float snowCooldownTimer;//눈 쏘기 쿨타임
+    float makeSnowBallCooldownTimer;
 
 
     bool isCooldowning;//쿨다운 중인가?
@@ -31,7 +31,7 @@ public class SnowManager : MonoBehaviour {
         haveSnowBallCount = LimitSnowBallCount;
         MakeSnowBallSpeed = ctManager.MakeSnowBallSpeed;
         snowBallCoolDownTime = ctManager.AttackSpeed;
-        getSnowCooldown = MakeSnowBallSpeed;
+        makeSnowBallCooldownTimer = MakeSnowBallSpeed;
         ctManager.setSnowBallLableInit(LimitSnowBallCount);
 
         if (cam == null)
@@ -46,39 +46,43 @@ public class SnowManager : MonoBehaviour {
 	void Update () {
         if (isCooldowning)
         {
-            snowCooldown -= Time.deltaTime;
-            //print(snowCooldown);
+            snowCooldownTimer -= Time.deltaTime;
+            //print(snowCooldownTimer);
         }
-        if (snowCooldown <= 0 && isCooldowning) {
-            snowCooldown = 0;
+        if (snowCooldownTimer <= 0 && isCooldowning) {
+            snowCooldownTimer = 0;
             isCooldowning = false;
         }
-        if (ctManager.IsMakingSnowBall)
-            getSnowCooldown -= Time.deltaTime;
-        if (getSnowCooldown < 0)
+        if (ctManager.State == CharacterState.Channeling && makeSnowBallCooldownTimer>0)
+            makeSnowBallCooldownTimer -= Time.deltaTime;
+        if (makeSnowBallCooldownTimer < 0)
         {
             haveSnowBallCount++;
             stManager.useSnow();
 
-            getSnowCooldown = MakeSnowBallSpeed;
+            makeSnowBallCooldownTimer = MakeSnowBallSpeed;
         }
         ctManager.setSnowBallLableI(haveSnowBallCount);
 
     }
-    //쏘는 메서드
-    public void shot()
+    private void FixedUpdate()
+    {
+
+    }    //쏘는 메서드
+    public void shot(int damage)
     {
         if (!isCooldowning && haveSnowBallCount > 0)
         {
             haveSnowBallCount--;
             isCooldowning = true;
-            GameObject newSnowBullet = Instantiate(snowBall, ctManager.ThisGameObject.transform.position + ctManager.ThisGameObject.transform.forward * snowBallStartPosition + ctManager.ThisGameObject.transform.up, cam.transform.rotation);
+            GameObject newSnowBullet = Instantiate(snowBall, 
+                ctManager.ThisGameObject.transform.position + ctManager.ThisGameObject.transform.forward * snowBallStartPosition + ctManager.ThisGameObject.transform.up*0.5f, 
+                cam.transform.rotation);
 
             SnowBallManager sb = newSnowBullet.GetComponent<SnowBallManager>();
-            sb.forward = cam.transform.forward;
-            sb.theBody = ctManager.ThisGameObject;
+            sb.initSnowBall(cam.transform.forward, damage);
             newSnowBullet.SetActive(true);
-            snowCooldown = snowBallCoolDownTime;
+            snowCooldownTimer = snowBallCoolDownTime;
             
 
         }
@@ -91,21 +95,22 @@ public class SnowManager : MonoBehaviour {
         stManager = ctManager.BottomObject.GetComponent<SnowTerrainManager>();
         if (stManager == null)
         {
-            ctManager.IsMakingSnowBall = false;
-            getSnowCooldown = MakeSnowBallSpeed;
+            //ctManager.IsMakingSnowBall = false;
+            ctManager.State = CharacterState.Normal;
+            makeSnowBallCooldownTimer = MakeSnowBallSpeed;
             return;
         }
 
                
         if (haveSnowBallCount < LimitSnowBallCount &&stManager.CanGetSnow)
         {
-            ctManager.IsMakingSnowBall = true;
-            
-            
+            ctManager.State = CharacterState.Channeling;
+
+
         }
         else
         {
-            ctManager.IsMakingSnowBall = false;
+            ctManager.State = CharacterState.Normal;
         }
     }
 

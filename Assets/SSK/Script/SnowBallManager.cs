@@ -4,16 +4,28 @@ using UnityEngine;
 
 public class SnowBallManager : MonoBehaviour {
     const float FORCEVELO = 2.0f;
-    public float speed = 1.0f;
-    public float mass = 1.0f;
-    public float bulletUpAngle = 5f;
-    public GameObject theBody;
+    public float speed;
+    public float mass;
+    public float bulletUpAngle;
+    //public GameObject theBody;
     public Vector3 forward;
     public Rigidbody thisRigidbody;
     public GameObject thisGameObject;
     public AudioSource hitAudioSource;
     // Use this for initialization
     bool isHit = false;
+    int damage;
+    public int Damage
+    {
+        get
+        {
+            return damage;
+        }
+        set
+        {
+            damage = value;
+        }
+    }
 
     void Awake()
     {
@@ -29,14 +41,12 @@ public class SnowBallManager : MonoBehaviour {
             }
 
         }
-        //theBody = thisGameObject.transform.parent.gameObject;
         Vector3 bulletForward = forward;
-        //bulletForward = Quaternion.Euler(theBody.transform.right * -bulletUpAngle) * bulletForward;
-        //bulletForward = Quaternion.Euler(theBody.transform.right * -bulletUpAngle) * bulletForward;
-
         thisRigidbody.AddForce(bulletForward * speed * speed * thisRigidbody.mass / FORCEVELO);
-        isHit = false;
+        //theBody = thisGameObject.transform.parent.gameObject;
+
     }
+    
     void Start()
     {
         
@@ -52,10 +62,29 @@ public class SnowBallManager : MonoBehaviour {
         }
         if (isHit && !hitAudioSource.isPlaying)
             Destroy(thisGameObject);
+        
 
     }
+    public void initSnowBall(Vector3 forward, int damage)
+    {
+        this.forward = forward;
+
+        //bulletForward = Quaternion.Euler(theBody.transform.right * -bulletUpAngle) * bulletForward;
+        //bulletForward = Quaternion.Euler(theBody.transform.right * -bulletUpAngle) * bulletForward;
+
+
+        isHit = false;
+        this.damage = damage;
+    }
+
+
     void OnCollisionEnter(Collision collision)
     {
+        print("Colliison!"+collision.gameObject.name + LayerMask.LayerToName(collision.gameObject.layer));
+        if ( collision.gameObject.layer == LayerMask.NameToLayer("enemy") ){
+            CharacterManager otherCtManager = collision.gameObject.GetComponent<CharacterManager>();
+            otherCtManager.beShot(damage);
+        }
         hitAudioSource.Play();
         Destroy(GetComponent<SphereCollider>());
         Destroy(GetComponent<MeshRenderer>());

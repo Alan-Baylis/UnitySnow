@@ -1654,11 +1654,9 @@ GameObject:
   - component: {fileID: 4736485328344640}
   - component: {fileID: 54513473955953484}
   - component: {fileID: 136743877434356622}
-  - component: {fileID: 114171897144978224}
-  - component: {fileID: 114141258492424902}
+  - component: {fileID: 114572311388341272}
   - component: {fileID: 82871130053510700}
   - component: {fileID: 82814001022815016}
-  - component: {fileID: 114257256272012664}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -1743,7 +1741,7 @@ GameObject:
   - component: {fileID: 82093569116336190}
   - component: {fileID: 114132429747439462}
   - component: {fileID: 82659157091383966}
-  m_Layer: 9
+  m_Layer: 20
   m_Name: snowBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3132,7 +3130,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1011768321821566}
-  m_LocalRotation: {x: -0.09374654, y: 0.6978552, z: 0.70746905, w: 0.060806748}
+  m_LocalRotation: {x: -0.09374654, y: 0.6978552, z: 0.70746905, w: 0.0608067}
   m_LocalPosition: {x: -0.05543403, y: 0.0017306843, z: 0.098653734}
   m_LocalScale: {x: 1.0000004, y: 1.0000006, z: 1.0000005}
   m_Children:
@@ -4931,7 +4929,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1334457135745706}
-  m_LocalRotation: {x: -0, y: -1, z: -0, w: -0.00000016292068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -5461,8 +5459,8 @@ Rigidbody:
   m_GameObject: {fileID: 1683163691821126}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 0.3
+  m_AngularDrag: 0.3
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -5901,7 +5899,7 @@ MonoBehaviour:
   jumpAndLandingBob:
     BobDuration: 0.15
     BobAmount: 0.2
-  rigidbodyFirstPersonController: {fileID: 114171897144978224}
+  rigidbodyFirstPersonController: {fileID: 0}
   StrideInterval: 4
   RunningStrideLengthen: 0.722
 --- !u!114 &114132429747439462
@@ -5915,101 +5913,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa016e05658ba304a8d86a9b729b8a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
+  speed: 100
   mass: 1
   bulletUpAngle: 5
-  theBody: {fileID: 1889171001389854}
   forward: {x: 0, y: 0, z: 0}
   thisRigidbody: {fileID: 0}
   thisGameObject: {fileID: 0}
   hitAudioSource: {fileID: 0}
---- !u!114 &114141258492424902
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1663919386718628}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f808ee3ad5f0594f958c4442f1c1412, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 0}
-  snowBall: {fileID: 0}
-  thisGameObject: {fileID: 0}
---- !u!114 &114171897144978224
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1663919386718628}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81c9795a96c094f4cbde4d65546aa9b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 0}
-  movementSettings:
-    ForwardSpeed: 8
-    BackwardSpeed: 4
-    StrafeSpeed: 4
-    RunMultiplier: 2
-    RunKey: 304
-    JumpForce: 50
-    SlopeCurveModifier:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: -90
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 90
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    CurrentTargetSpeed: 8
-  mouseLook:
-    XSensitivity: 2
-    YSensitivity: 2
-    clampVerticalRotation: 1
-    MinimumX: -45
-    MaximumX: 90
-    smooth: 1
-    smoothTime: 18
-    lockCursor: 1
-  advancedSettings:
-    groundCheckDistance: 0.1
-    stickToGroundHelperDistance: 0.6
-    slowDownRate: 20
-    airControl: 0
-    shellOffset: 0
-  thisGameObject: {fileID: 0}
-  soundManager: {fileID: 0}
-  snowManager: {fileID: 0}
---- !u!114 &114257256272012664
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1663919386718628}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2335a2df1514004d9b6a8a703d1b5a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114342844728680518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6064,6 +5974,17 @@ MonoBehaviour:
   theBody: {fileID: 1889171001389854}
   thisCollider: {fileID: 135733520358396324}
   forward: {x: 0, y: 0, z: 0}
+--- !u!114 &114572311388341272
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663919386718628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f34bee11cdaf964b86dbf048affe486, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114803161976968372
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6218,7 +6139,7 @@ SphereCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1683163691821126}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

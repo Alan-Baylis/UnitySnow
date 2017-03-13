@@ -16,7 +16,7 @@ public class ScoutCharaterManager : CharacterManager {
 
     private void Awake()
     {
-        initState();
+        initState(isPlayer);
         initValue();
     }
     // Use this for initialization
@@ -30,7 +30,7 @@ public class ScoutCharaterManager : CharacterManager {
         makeSnowBallSpeed = 0.1f;
         hp = 80;
         snowBallMagaine = 50;
-        attackPower = 10;
+        attackPower = 1;
         attackSpeed = 0.1f;
         weaponState = false;
     }
